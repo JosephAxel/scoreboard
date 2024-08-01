@@ -248,7 +248,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const team2FoulElement = document.getElementById('team2-foul-count');
 
     function updateFoul(element, foulCount) {
+        // Update the text content
         element.textContent = foulCount;
+
+        // Add or remove the 'red' class based on the foul count
+        if (foulCount >= 5) {
+            element.classList.add('red');
+        } else {
+            element.classList.remove('red');
+        }
     }
 
     document.addEventListener('keydown', (event) => {

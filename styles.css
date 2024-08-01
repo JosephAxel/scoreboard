@@ -39,7 +39,7 @@ body {
 
 .score {
     font-size: 10.92em; /* Increased by 30% from 8.4em */
-    color: blue;
+    color: white;
     margin-bottom: 31.2px; /* Increased by 30% from 24px */
     cursor: pointer;
     outline: none;
@@ -63,7 +63,7 @@ body {
 
 .shot-clock {
     font-size: 6.76em; /* Increased by 30% from 5.2em */
-    color: red;
+    color: white;
     margin-bottom: 31.2px; /* Increased by 30% from 24px */
 }
 
@@ -76,12 +76,16 @@ body {
 
 .foul-count {
     font-size: 7.8em; /* Increased by 30% from 6em */
-    color: yellow;
+    color: white;
     border: 5.46px solid white; /* Increased by 30% from 4.2px */
     border-radius: 27.3px; /* Increased by 30% from 21px */
     padding: 18.2px; /* Increased by 30% from 14px */
     width: 182px; /* Increased by 30% from 140px */
     text-align: center;
+}
+
+.foul-count.red {
+    color: red; /* Color when foul count is more than 5 */
 }
 
 .controls {
