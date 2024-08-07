@@ -50,12 +50,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const timerElement = document.getElementById('timer');
     const shotClockElement = document.getElementById('shot-clock');
-    const startPauseButton = document.getElementById('start-pause-btn');
     const team1NameElement = document.getElementById('team1-name');
     const team2NameElement = document.getElementById('team2-name');
 
     function updateScore(element, score) {
         element.textContent = score < 10 ? `0${score}` : score;
+        if (score <= 5) {
+            element.classList.add('red');
+        } else {
+            element.classList.remove('red');
+        }
     }
 
     function updateTimer() {

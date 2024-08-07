@@ -67,6 +67,10 @@ body {
     margin-bottom: 31.2px; /* Increased by 30% from 24px */
 }
 
+.shot-clock.red {
+    color: red; /* Color when shot-clock count is less than 5 */
+}
+
 .fouls {
     display: flex;
     align-items: center;
