@@ -9,21 +9,21 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (event) => {
         let currentScoreElement = null;
 
-        if (event.key === 'a' || event.key === 's') {
+        if (event.key === 'a' || event.key === 'A' || event.key === 's' || event.key === 'S' ) {
             currentScoreElement = team1ScoreElement;
-        } else if (event.key === 'k' || event.key === 'l') {
+        } else if (event.key === 'k' || event.key === 'K' || event.key === 'l' || event.key === 'L') {
             currentScoreElement = team2ScoreElement;
         }
 
         if (currentScoreElement) {
             let currentScore = parseInt(currentScoreElement.textContent, 10);
-            if (event.key === 'a') {
+            if (event.key === 'a' || event.key === 'A' ) {
                 currentScore = Math.max(0, currentScore - 1); // Decrease Team 1 score
-            } else if (event.key === 's') {
+            } else if (event.key === 's' || event.key === 'S') {
                 currentScore += 1; // Increase Team 1 score
-            } else if (event.key === 'k') {
+            } else if (event.key === 'k' || event.key === 'K') {
                 currentScore = Math.max(0, currentScore - 1); // Decrease Team 2 score
-            } else if (event.key === 'l') {
+            } else if (event.key === 'l' || event.key === 'L') {
                 currentScore += 1; // Increase Team 2 score
             }
             updateScore(currentScoreElement, currentScore);
@@ -45,13 +45,32 @@ document.addEventListener('DOMContentLoaded', () => {
     let timerInterval = null;
     let shotClockInterval = null;
     let timerSeconds = 600; // Initial timer seconds (10 minutes)
-    let shotClockSeconds = 12; // Initial shot clock seconds
+    let shotClockDuration = 12; // Global shot clock duration (default 12 seconds)
+    let shotClockSeconds = shotClockDuration; // Initialize with the shot clock duration
     const shotClockBeep = new Audio('assets/buzzer.mp3'); // Update path to your beep sound
 
     const timerElement = document.getElementById('timer');
     const shotClockElement = document.getElementById('shot-clock');
     const team1NameElement = document.getElementById('team1-name');
     const team2NameElement = document.getElementById('team2-name');
+
+    timerElement.addEventListener('click', () => {
+        if (!isRunning) { // Only set hover if timer is not running
+            currentHoveredElement = timerElement;
+        }
+    });
+
+    team1NameElement.addEventListener('click', () => {
+        if (!isRunning) { // Only set hover if timer is not running
+            currentHoveredElement = team1NameElement;
+        }
+    });
+
+    team2NameElement.addEventListener('click', () => {
+        if (!isRunning) { // Only set hover if timer is not running
+            currentHoveredElement = team2NameElement;
+        }
+    });
 
     function updateScore(element, score) {
         element.textContent = score < 10 ? `0${score}` : score;
@@ -119,18 +138,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function changeShotClock(seconds) {
-        if (!isShotClockRunning) { // Only allow changes if shot clock is not running
-            shotClockSeconds = Math.max(0, shotClockSeconds + seconds);
-            updateScore(shotClockElement, shotClockSeconds);
-        }
-    }
+    // function changeShotClock(seconds) {
+    //     if (!isShotClockRunning) { // Only allow changes if shot clock is not running
+    //         shotClockSeconds = Math.max(0, shotClockSeconds + seconds);
+    //         updateScore(shotClockElement, shotClockSeconds);
+    //     }
+    // }
 
     function changeTeamName(element) {
         let currentName = element.textContent.trim();
         let newName = prompt('Enter new team name:', currentName);
         if (newName !== null) {
             element.textContent = newName;
+            adjustFontSize(element);
+        }
+    }
+
+    function adjustFontSize(element) {
+        // Atur ukuran font maksimum sesuai dengan gaya CSS
+        const maxFontSize = 4.68; // Ukuran font maksimal
+        let fontSize = maxFontSize;
+    
+        element.style.fontSize = fontSize + "em";
+        let marginBottom = 31.2;
+        
+        // Kurangi ukuran font hingga teks muat dalam div
+        while (element.scrollWidth > element.clientWidth && fontSize > 0) {
+            fontSize -= 0.5;
+            marginBottom += 2;
+            element.style.fontSize = fontSize + "em";
+            element.style.marginBottom = marginBottom + "px";
         }
     }
 
@@ -145,8 +182,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function changeShotClockDuration(newDuration) {
+        if (!isShotClockRunning) { // Only allow changes if shot clock is not running
+            shotClockDuration = newDuration;
+            shotClockSeconds = shotClockDuration;
+            updateScore(shotClockElement, shotClockSeconds);
+        }
+    }
+
     function resetShotClock() {
-        shotClockSeconds = 12; // Reset to 12 seconds
+        shotClockSeconds = shotClockDuration; // Reset to the global shot clock duration
         updateScore(shotClockElement, shotClockSeconds);
         if (!isShotClockRunning) {
             shotClockInterval = setInterval(updateShotClock, 1000); // Start shot clock immediately
@@ -157,50 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
             shotClockInterval = setInterval(updateShotClock, 1000); // Restart shot clock immediately
         }
     }
-
-    shotClockElement.addEventListener('click', () => {
-        toggleShotClock(); // Toggle shot clock on click
-    });
-
-    timerElement.addEventListener('mouseover', () => {
-        if (!isRunning) { // Only set hover if timer is not running
-            currentHoveredElement = timerElement;
-        }
-    });
-
-    team1NameElement.addEventListener('mouseover', () => {
-        if (!isRunning) { // Only set hover if timer is not running
-            currentHoveredElement = team1NameElement;
-        }
-    });
-
-    team2NameElement.addEventListener('mouseover', () => {
-        if (!isRunning) { // Only set hover if timer is not running
-            currentHoveredElement = team2NameElement;
-        }
-    });
-
-    shotClockElement.addEventListener('mouseover', () => {
-        if (!isShotClockRunning) { // Only set hover if shot clock is not running
-            currentHoveredElement = shotClockElement;
-        }
-    });
-
-    timerElement.addEventListener('mouseout', () => {
-        currentHoveredElement = null;
-    });
-
-    team1NameElement.addEventListener('mouseout', () => {
-        currentHoveredElement = null;
-    });
-
-    team2NameElement.addEventListener('mouseout', () => {
-        currentHoveredElement = null;
-    });
-
-    shotClockElement.addEventListener('mouseout', () => {
-        currentHoveredElement = null;
-    });
 
     document.addEventListener('keydown', (event) => {
         if (event.key === ' ') {
@@ -214,6 +215,12 @@ document.addEventListener('DOMContentLoaded', () => {
             isRunning = !isRunning;
         }
 
+        // Change shot clock duration with '1' and '2'
+        if (event.key === '1') {
+            changeShotClockDuration(12); // Set to 12 seconds
+        } else if (event.key === '2') {
+            changeShotClockDuration(24); // Set to 24 seconds
+        }
         // Handle shot clock control with o/O
         if (event.key === 'o' || event.key === 'O') {
             toggleShotClock();
@@ -230,13 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (event.key === 'e' || event.key === 'E') {
                     changeTeamName(currentHoveredElement); // Change team name
                 }
-            } else if (currentHoveredElement === shotClockElement) {
-                if (event.key === '+') {
-                    changeShotClock(1); // Add 1 second
-                } else if (event.key === '-') {
-                    changeShotClock(-1); // Subtract 1 second
-                }
-            }
+            } 
         }
     });
 
@@ -244,6 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateTimer();
     updateScore(shotClockElement, shotClockSeconds);
 });
+
 
 
 
@@ -266,21 +268,21 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (event) => {
         let currentFoulElement = null;
 
-        if (event.key === 'z' || event.key === 'x') {
+        if (event.key === 'z' || event.key === 'Z' || event.key === 'x' || event.key === 'X') {
             currentFoulElement = team1FoulElement;
-        } else if (event.key === 'n' || event.key === 'm') {
+        } else if (event.key === 'n' || event.key === 'N' || event.key === 'm' || event.key === 'M') {
             currentFoulElement = team2FoulElement;
         }
 
         if (currentFoulElement) {
             let currentFoul = parseInt(currentFoulElement.textContent, 10);
-            if (event.key === 'z') {
+            if (event.key === 'z' || event.key === 'Z') {
                 currentFoul = Math.max(0, currentFoul - 1); // Decrease Team 1 fouls
-            } else if (event.key === 'x') {
+            } else if (event.key === 'x' || event.key === 'X') {
                 currentFoul += 1; // Increase Team 1 fouls
-            } else if (event.key === 'n') {
+            } else if (event.key === 'n' || event.key === 'N') {
                 currentFoul = Math.max(0, currentFoul - 1); // Decrease Team 2 fouls
-            } else if (event.key === 'm') {
+            } else if (event.key === 'm' || event.key === 'M') {
                 currentFoul += 1; // Increase Team 2 fouls
             }
             updateFoul(currentFoulElement, currentFoul);

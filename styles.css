@@ -18,30 +18,46 @@ body {
     text-align: center;
     padding-left: 15%;
     padding-right: 15%;
+    height: 83%;
 }
 
 .team-section-1 {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    height: 100%;
+    justify-content: flex-end;
 }
 
 .team-section-2 {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    height: 100%;
+    justify-content: flex-end;
 }
 
 .team-name {
-    font-size: 4.68em; /* Increased by 30% from 3.6em */
-    margin-bottom: 31.2px; /* Increased by 30% from 24px */
+    font-size: 4.68em; 
+    margin-bottom: 31.2px; 
+    max-width: 319.38px; 
+    cursor: pointer;
 }
+
+/* .team-name {
+    font-size: clamp(1em, 4vw, 4.68em); 
+    margin-bottom: 31.2px; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    max-width: 319.38px; 
+} */
 
 .score {
     font-size: 10.92em; /* Increased by 30% from 8.4em */
     color: white;
     margin-bottom: 31.2px; /* Increased by 30% from 24px */
-    cursor: pointer;
+    /* cursor: pointer; */
     outline: none;
     border: 5.46px solid white; /* Increased by 30% from 4.2px */
     border-radius: 27.3px; /* Increased by 30% from 21px */
@@ -59,6 +75,11 @@ body {
 .timer {
     font-size: 9.36em; /* Increased by 30% from 7.2em */
     margin-bottom: 31.2px; /* Increased by 30% from 24px */
+    cursor: pointer;
+}
+
+.timer:active, .team-name:active {
+    background-color: #424446; /* Warna latar belakang berubah saat diklik */
 }
 
 .shot-clock {
