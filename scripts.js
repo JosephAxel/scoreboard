@@ -203,10 +203,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function offensiveShotClock() {
+        if(shotClockDuration === 24) {
+            shotClockSeconds = 14; // Reset to the global shot clock duration
+            updateScore(shotClockElement, shotClockSeconds);
+            if (!isShotClockRunning) {
+                shotClockInterval = setInterval(updateShotClock, 1000); // Start shot clock immediately
+                isShotClockRunning = true;
+            } else {
+                // If shot clock is running, update the score and reset the interval
+                clearInterval(shotClockInterval);
+                shotClockInterval = setInterval(updateShotClock, 1000); // Restart shot clock immediately
+            }
+        }
+    }
+
     document.addEventListener('keydown', (event) => {
         if (event.key === ' ') {
             resetShotClock(); // Reset and start shot clock
-        } else if (event.key === 'p' || event.key === 'P') {
+        } else if (event.key === 'r' || event.key === 'R') {
+            offensiveShotClock();
+        }else if (event.key === 'p' || event.key === 'P') {
             if (isRunning) {
                 stopTimer();
             } else {
