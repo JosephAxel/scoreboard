@@ -162,13 +162,19 @@ document.addEventListener('DOMContentLoaded', () => {
         element.style.fontSize = fontSize + "em";
         let marginBottom = 31.2;
         
+        const originalWhiteSpace = element.style.whiteSpace;
+        element.style.whiteSpace = 'nowrap';
+        
         // Kurangi ukuran font hingga teks muat dalam div
         while (element.scrollWidth > element.clientWidth && fontSize > 0) {
+            console.log(element.scrollWidth + " - " + element.clientWidth);
             fontSize -= 0.5;
             marginBottom += 2;
             element.style.fontSize = fontSize + "em";
             element.style.marginBottom = marginBottom + "px";
         }
+
+        element.style.whiteSpace = originalWhiteSpace;
     }
 
     function toggleShotClock() {
